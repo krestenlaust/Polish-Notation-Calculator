@@ -44,12 +44,12 @@ const Operation = struct {
     operand: ?i32,
 };
 
-pub fn unary_factory(operator: u8) ?fn (i32, i32) i32 {
+pub fn unary_factory(operator: u8) ?fn (i32) i32 {
     _ = operator;
     // Return function for computing result of unary operator.
 }
 
-pub fn binary_factory(operator: u8) ?fn (i32) i32 {
+pub fn binary_factory(operator: u8) ?fn (i32, i32) i32 {
     _ = operator;
     // Return function for computing result of binary operator.
 }
