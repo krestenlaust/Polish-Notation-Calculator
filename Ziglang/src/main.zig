@@ -1,8 +1,7 @@
 const std = @import("std");
 const print = @import("std").debug.print;
-const stdin = std.io.getStdIn().reader();
 
-pub fn main() !void {
+pub fn main() void {
     var final_value: i32 = calculate();
 
     print("\nYour final result is: {}", .{final_value});
@@ -12,8 +11,11 @@ pub fn calculate() i32 {
     var result: i32 = 123;
 
     while (true) {
-        var op = query_next_operation();
-        _ = op;
+        if (query_next_operation()) |op| {
+            _ = op;
+        } else |err| {
+            _ = err;
+        }
 
         // Do operation.
 
@@ -23,18 +25,20 @@ pub fn calculate() i32 {
     return result;
 }
 
-pub fn query_next_operation() Operation {
+pub fn query_next_operation() !Operation {
     print("Enter operator and an optional operand: ", .{});
     // Get operator.
+    const stdin = std.io.getStdIn().reader();
 
     var buf: [std.mem.page_size]u8 = undefined;
-    var line = try stdin.readUntilDelimiterOrEof(buf[0..], '\n');
+    var line: []u8 = stdin.readUntilDelimiterOrEof(buf[0..], '\n');
     var iter = std.mem.split(u8, line, " ");
 
     var operator_symbol: ?[]u8 = iter.next();
     _ = operator_symbol;
 
     var operand: ?[]u8 = iter.next();
+    print("{any}", .{operand});
 
     if (operand == null) {}
 }
