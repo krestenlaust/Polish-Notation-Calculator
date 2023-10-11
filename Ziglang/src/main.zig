@@ -1,5 +1,5 @@
 const std = @import("std");
-const print = @import("std").debug.print;
+const print = std.debug.print;
 const operators = @import("operators.zig");
 const parsing = @import("parsing.zig");
 const Operation = @import("operation.zig").Operation;
@@ -10,36 +10,50 @@ pub fn main() void {
     print("\nYour final result is: {}", .{final_value});
 }
 
-pub fn calculate() f32 {
-    var result: f32 = 123;
+fn calculate() f32 {
+    var memory: f32 = 123;
 
     while (true) {
         if (query_next_operation()) |op| {
-            result = do_operation(op, result);
-            print("Result so far: {d}\n", .{result});
+            if (do_operation(op, memory)) |result| {
+                memory = result;
+            } else |err| switch (err) {
+                operators.OperationError.DivideByZero => {
+                    print("Divide by zero\n", .{});
+                    continue;
+                },
+                operators.OperationError.ExitProgram => {
+                    print("Exit program\n", .{});
+                    break;
+                },
+            }
+
+            print("Result so far: {d}\n", .{memory});
         } else |err| {
-            print("Error: {any}", .{err});
+            print("Error: {any}\n", .{err});
         }
     }
 
-    return result;
+    print("Final result is: {d}", .{memory});
+
+    return memory;
 }
 
-pub fn do_operation(operation: Operation, first_operand: f32) !f32 {
-    const operator_info: i32 = try operators.get_operator_info(operation.operator);
+fn do_operation(operation: Operation, first_operand: f32) operators.OperationError!f32 {
+    // We expect operation to only contain valid operators.
+    const operator_info = operators.get_operator_info(operation.operator) catch unreachable;
 
     if (operator_info == 1) {
-        const unary_func = try operators.unary_factory(operation.operator);
+        const unary_func = try operators.unary_factory(operation.operator) catch unreachable;
 
         return unary_func(first_operand);
     }
 
-    const binary_func = try operators.binary_factory(operation.operator);
-
+    const binary_func = try operators.binary_factory(operation.operator) catch unreachable;
     return binary_func(first_operand, operation.operand);
 }
 
-pub fn query_next_operation() !Operation {
+fn query_next_operation() !Operation {
     print("Enter operator and an optional operand: ", .{});
     // Get operator.
     const stdin = std.io.getStdIn().reader();

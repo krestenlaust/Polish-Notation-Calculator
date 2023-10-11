@@ -1,10 +1,11 @@
-const math = @import("std.zig").math;
+const std = @import("std");
+const math = std.math;
 
-const OperatorFactoryError: type = error{
+pub const OperatorFactoryError: type = error{
     InvalidOperator,
 };
 
-const OperationError: type = error{
+pub const OperationError: type = error{
     DivideByZero,
     ExitProgram,
 };
@@ -24,14 +25,14 @@ pub fn get_operator_info(operator: u8) OperatorFactoryError!i32 {
     };
 }
 
-pub fn unary_factory(operator_type: u8) OperatorFactoryError!fn (f32) OperationError!f32 {
+pub fn unary_factory(operator_type: u8) OperatorFactoryError!*const fn (f32) OperationError!f32 {
     return switch (operator_type) {
         '#' => squareroot_operator,
         else => OperatorFactoryError.InvalidOperator,
     };
 }
 
-pub fn binary_factory(operator_type: u8) OperatorFactoryError!fn (f32, f32) OperationError!f32 {
+pub fn binary_factory(operator_type: u8) OperatorFactoryError!*const fn (f32, f32) OperationError!f32 {
     // Return function for computing result of binary operator.
     return switch (operator_type) {
         '+' => plus_operator,
