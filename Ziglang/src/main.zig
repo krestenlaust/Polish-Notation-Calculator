@@ -1,6 +1,8 @@
 const std = @import("std");
 const print = @import("std").debug.print;
 const operators = @import("operators.zig");
+const parsing = @import("parsing.zig");
+const Operation = @import("operation.zig").Operation;
 
 pub fn main() void {
     var final_value: f32 = calculate();
@@ -23,23 +25,18 @@ pub fn calculate() f32 {
     return result;
 }
 
-const Operation = struct {
-    operator: u8,
-    operand: ?f32,
-};
+pub fn do_operation(operation: Operation, first_operand: f32) !f32 {
+    const operator_info: i32 = try operators.get_operator_info(operation.operator);
 
-const ParseOperationError = error{
-    InvalidOperator,
-    InvalidOperand,
-    WrongOperandAmount,
-    NoInput,
-};
+    if (operator_info == 1) {
+        const unary_func = try operators.unary_factory(operation.operator);
 
-pub fn do_operation(operation: Operation, first_operand: f32) f32 {
-    _ = first_operand;
-    _ = operation;
+        return unary_func(first_operand);
+    }
 
-    return 1234;
+    const binary_func = try operators.binary_factory(operation.operator);
+
+    return binary_func(first_operand, operation.operand);
 }
 
 pub fn query_next_operation() !Operation {
@@ -51,47 +48,5 @@ pub fn query_next_operation() !Operation {
     var line: []u8 = try stdin.readUntilDelimiter(buf[0..], '\n');
 
     // Ignore errors as specified in task.
-    return try parse_operation_input(line);
-}
-
-fn parse_operation_input(operation_string: []const u8) ParseOperationError!Operation {
-    var iter = std.mem.split(u8, operation_string, " ");
-
-    var first_parameter: ?[]const u8 = iter.next();
-
-    // No input provided.
-    if (first_parameter == null) {
-        return ParseOperationError.NoInput;
-    }
-
-    if (std.mem.len(first_parameter.?) != 1) {
-        return ParseOperationError.InvalidOperator;
-    }
-
-    var operator_symbol: u8 = first_parameter.?[0];
-    var operand_count: operators.OperatorFactoryError!i32 = operators.get_operator_info(operator_symbol);
-
-    // Operator not recognized.
-    if (operand_count == null) {
-        return ParseOperationError.InvalidOperator;
-    }
-
-    var second_parameter: ?[]const u8 = iter.next();
-    if (second_parameter == null) {
-        if (operand_count.? > 1) {
-            return ParseOperationError.WrongOperandAmount;
-        }
-
-        return Operation{
-            .operator = operator_symbol,
-            .operand = null,
-        };
-    }
-
-    var operand_value: f32 = std.fmt.parseFloat(f32, second_parameter.?) catch return ParseOperationError.InvalidOperand;
-
-    return Operation{
-        .operator = operator_symbol,
-        .operand = operand_value,
-    };
+    return try parsing.parse_operation_input(line);
 }

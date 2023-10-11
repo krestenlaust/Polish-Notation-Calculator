@@ -1,3 +1,5 @@
+const math = @import("std.zig").math;
+
 const OperatorFactoryError: type = error{
     InvalidOperator,
 };
@@ -23,10 +25,10 @@ pub fn get_operator_info(operator: u8) OperatorFactoryError!i32 {
 }
 
 pub fn unary_factory(operator_type: u8) OperatorFactoryError!fn (f32) OperationError!f32 {
-    _ = operator_type;
-    // Return function for computing result of unary operator.
-
-    return OperatorFactoryError.InvalidOperator;
+    return switch (operator_type) {
+        '#' => squareroot_operator,
+        else => OperatorFactoryError.InvalidOperator,
+    };
 }
 
 pub fn binary_factory(operator_type: u8) OperatorFactoryError!fn (f32, f32) OperationError!f32 {
@@ -37,6 +39,10 @@ pub fn binary_factory(operator_type: u8) OperatorFactoryError!fn (f32, f32) Oper
     };
 }
 
-fn plus_operator(operand1: f32, operand2: f32) OperationError!f32 {
-    return operand1 + operand2;
+fn plus_operator(summand1: f32, summand2: f32) OperationError!f32 {
+    return summand1 + summand2;
+}
+
+fn squareroot_operator(radicand: f32) OperationError!f32 {
+    return math.Sqrt(radicand);
 }
