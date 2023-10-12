@@ -19,7 +19,8 @@ pub fn parse_operation_input(operation_string: []const u8) ParseOperationError!O
         return ParseOperationError.NoInput;
     }
 
-    if (std.mem.len(first_parameter.?) != 1) {
+    // Make sure first operand is only one character.
+    if (std.mem.len(first_parameter.?) != 1 and first_parameter.?[1] != '\r') {
         return ParseOperationError.InvalidOperator;
     }
 
@@ -38,7 +39,7 @@ pub fn parse_operation_input(operation_string: []const u8) ParseOperationError!O
         };
     }
 
-    var operand_value: f32 = std.fmt.parseFloat(f32, second_parameter.?) catch return ParseOperationError.InvalidOperand;
+    var operand_value: f32 = std.fmt.parseFloat(f32, second_parameter.?[0 .. second_parameter.?.len - 1]) catch return ParseOperationError.InvalidOperand;
 
     return Operation{
         .operator = operator_symbol,

@@ -11,7 +11,7 @@ pub fn main() void {
 }
 
 fn calculate() f32 {
-    var memory: f32 = 123;
+    var memory: f32 = 0;
 
     while (true) {
         if (query_next_operation()) |op| {

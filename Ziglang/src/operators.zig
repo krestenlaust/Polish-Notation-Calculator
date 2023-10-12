@@ -2,7 +2,7 @@ const std = @import("std");
 const math = std.math;
 
 pub const OperatorFactoryError: type = error{
-    InvalidOperator,
+    OperatorNotFound,
 };
 
 pub const OperationError: type = error{
@@ -21,7 +21,7 @@ pub fn get_operator_info(operator: u8) OperatorFactoryError!i32 {
         '%' => 1,
         '!' => 1,
         'q' => 1,
-        else => OperatorFactoryError.InvalidOperator,
+        else => OperatorFactoryError.OperatorNotFound,
     };
 }
 
@@ -31,7 +31,7 @@ pub fn unary_factory(operator_type: u8) OperatorFactoryError!*const fn (f32) Ope
         '%' => flip_sign_operator,
         '!' => division_of_1_operator,
         'q' => quit_operator,
-        else => OperatorFactoryError.InvalidOperator,
+        else => OperatorFactoryError.OperatorNotFound,
     };
 }
 
@@ -59,7 +59,7 @@ pub fn binary_factory(operator_type: u8) OperatorFactoryError!*const fn (f32, f3
         '*' => multiplication_operator,
         '/' => division_operator,
         '^' => exponent_operator,
-        else => OperatorFactoryError.InvalidOperator,
+        else => OperatorFactoryError.OperatorNotFound,
     };
 }
 
