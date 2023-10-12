@@ -36,6 +36,10 @@ pub fn unary_factory(operator_type: u8) OperatorFactoryError!*const fn (f32) Ope
 }
 
 fn squareroot_operator(radicand: f32) OperationError!f32 {
+    if (radicand < 0) {
+        return radicand;
+    }
+
     return @sqrt(radicand);
 }
 
@@ -44,6 +48,10 @@ fn flip_sign_operator(value: f32) OperationError!f32 {
 }
 
 fn division_of_1_operator(divisor: f32) OperationError!f32 {
+    if (divisor == 0) {
+        return divisor;
+    }
+
     return 1 / divisor;
 }
 
