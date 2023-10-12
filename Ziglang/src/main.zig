@@ -11,12 +11,12 @@ pub fn main() void {
 }
 
 fn calculate() f32 {
-    var memory: f32 = 0;
+    var accumulator: f32 = 0;
 
     while (true) {
         if (query_next_operation()) |op| {
-            if (do_operation(op, memory)) |result| {
-                memory = result;
+            if (do_operation(op, accumulator)) |result| {
+                accumulator = result;
             } else |err| switch (err) {
                 operators.OperationError.DivideByZero => {
                     print("Divide by zero\n", .{});
@@ -28,13 +28,13 @@ fn calculate() f32 {
                 },
             }
 
-            print("Result so far: {d}\n", .{memory});
+            print("Result so far: {d}\n", .{accumulator});
         } else |err| {
             print("Error: {any}\n", .{err});
         }
     }
 
-    return memory;
+    return accumulator;
 }
 
 fn do_operation(operation: Operation, first_operand: f32) operators.OperationError!f32 {
