@@ -34,8 +34,6 @@ fn calculate() f32 {
         }
     }
 
-    print("Final result is: {d}", .{memory});
-
     return memory;
 }
 
@@ -44,13 +42,13 @@ fn do_operation(operation: Operation, first_operand: f32) operators.OperationErr
     const operator_info = operators.get_operator_info(operation.operator) catch unreachable;
 
     if (operator_info == 1) {
-        const unary_func = try operators.unary_factory(operation.operator) catch unreachable;
+        const unary_func = operators.unary_factory(operation.operator) catch unreachable;
 
         return unary_func(first_operand);
     }
 
-    const binary_func = try operators.binary_factory(operation.operator) catch unreachable;
-    return binary_func(first_operand, operation.operand);
+    const binary_func = operators.binary_factory(operation.operator) catch unreachable;
+    return binary_func(first_operand, operation.operand.?);
 }
 
 fn query_next_operation() !Operation {
