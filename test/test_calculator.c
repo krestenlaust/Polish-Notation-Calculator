@@ -3,39 +3,43 @@
 #include <math.h>
 
 /* Prototyper til test-funktioner */
-void test_do_next_op_case1(void);
-void test_do_next_op_case2(void);
+void test_do_next_op_flip_sign(void);
+void test_do_next_op_divide_by_10(void);
 void test_do_next_op_example_sequence(void);
 /* Prototype til en funktion der sammenligner doubles men tillader små afrundingsfejl. */
 int is_almost_equal(double, double);
 
 int main(void) {
     /* Kør alle test-funktioner. */
-    test_do_next_op_case1();
-    test_do_next_op_case2();
+    test_do_next_op_flip_sign();
+    test_do_next_op_divide_by_10();
     test_do_next_op_example_sequence();
 }
 
 /*********************************************
  * Skriv dine egne unit test af 'do_next_op' *
  *********************************************/
-void test_do_next_op_case1(void) {
+void test_do_next_op_flip_sign(void) {
     /* Arrange */
+    double akkumulator = 20.0;
 
     /* Act */
+    do_next_op('%', 0.0, &akkumulator);
 
     /* Assert */
-
+    assert(is_almost_equal(akkumulator, -20.0));
 }
-void test_do_next_op_case2(void) {
+
+void test_do_next_op_divide_by_10(void) {
     /* Arrange */
+    double akkumulator = 10.0;
 
     /* Act */
+    do_next_op('/', 10.0, &akkumulator);
 
     /* Assert */
-
+    assert(is_almost_equal(akkumulator, 1.0));
 }
-/* Tilføj gerne flere unit test. */
 
 
 /* Her har Morten implementeret regne-eksemplet fra opgavebeskrivelsen */
