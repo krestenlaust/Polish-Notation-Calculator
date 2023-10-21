@@ -4,6 +4,10 @@ void do_next_op(char operator, double operand, double* akkumulator) {
 
 }
 
+bool is_op_valid(char operator) {
+
+}
+
 bool is_op_binary(char operator) {
     return operator == '+' || operator == '-' || operator == '*' || operator == '/' || operator == '^';
 }
