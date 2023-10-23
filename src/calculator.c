@@ -50,9 +50,9 @@ binary_operator binary_op_factory(char operator){
             return divide;
         case POWER_OP:
             return power;
+        default:
+            return NULL;
     }
-
-    return NULL;
 }
 
 unary_operator unary_op_factory(char operator) {
@@ -65,7 +65,7 @@ unary_operator unary_op_factory(char operator) {
             return reciprocal;
         case EXIT_OP:
             return quit;
+        default:
+            return NULL;
     }
-
-    return NULL;
 }
