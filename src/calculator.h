@@ -1,3 +1,7 @@
+#pragma once
+
+#include "concrete_operators.h"
+#include <stdio.h>
 #include <stdbool.h>
 
 #define MINUS_OP '-'

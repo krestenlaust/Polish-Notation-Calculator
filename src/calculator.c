@@ -1,6 +1,4 @@
 #include "calculator.h"
-#include "concrete_operators.h"
-#include <stdio.h>
 
 bool is_op_binary(char operator);
 unary_operator unary_op_factory(char operator);

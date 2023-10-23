@@ -1,6 +1,8 @@
 #pragma once
-#include <stdbool.h>
 
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 double add(double x, double y);
 double subtract(double x, double y);

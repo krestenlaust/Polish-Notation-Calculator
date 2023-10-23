@@ -2,8 +2,6 @@
 // Created by kress on 23-10-2023.
 //
 #include "concrete_operators.h"
-#include <math.h>
-#include <stdlib.h>
 
 double add(double x, double y){
     return x + y;
