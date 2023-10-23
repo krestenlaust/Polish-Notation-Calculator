@@ -1,6 +1,6 @@
 #include "calculator.h"
 
-void do_next_op(char operator, double operand, double* akkumulator) {
+void do_next_op(char operator, double operand, double* accumulator) {
 
 }
 
@@ -11,7 +11,7 @@ bool is_op_valid(char operator) {
         operator == DIVISION_OP ||
         operator == POWER_OP ||
         operator == SQUAREROOT_OP ||
-        operator == FLIP_SIGN_OP ||
+        operator == NEGATE_OP ||
         operator == RECIPROCAL_OP ||
         operator == EXIT_OP;
 }

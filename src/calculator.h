@@ -7,11 +7,11 @@
 #define POWER_OP '^'
 
 #define SQUAREROOT_OP '#'
-#define FLIP_SIGN_OP '%'
+#define NEGATE_OP '%'
 #define RECIPROCAL_OP '!'
 #define EXIT_OP 'q'
 
 typedef double (*binary_operator) (double, double);
 typedef double (*unary_operator) (double);
 
-void do_next_op(char operator, double operand, double* akkumulator);
+void do_next_op(char operator, double operand, double* accumulator);
