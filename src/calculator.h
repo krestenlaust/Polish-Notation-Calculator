@@ -19,3 +19,5 @@ typedef double (*binary_operator) (double, double);
 typedef double (*unary_operator) (double);
 
 void do_next_op(char operator, double operand, double* accumulator);
+bool is_op_valid(char operator);
+bool is_op_binary(char operator);
