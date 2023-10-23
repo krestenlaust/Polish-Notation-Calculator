@@ -1,7 +1,9 @@
 
 add_library(calculator calculator.c
         concrete_operators.c
-        concrete_operators.h)
+        concrete_operators.h
+        input_reader.c
+        input_reader.h)
 target_link_libraries(calculator m)
 target_include_directories(calculator PUBLIC .)
 
